@@ -17,6 +17,8 @@
             <Setter Property="Margin" Value="5" />
         </Style>
     </Window.Resources>
+    
+    
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Réglage">
@@ -26,18 +28,19 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+        
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock Text="Image URL : "/>
             <Hyperlink>
                 <TextBlock Text="Put URL here"/>
             </Hyperlink>
         </StatusBar>
+       
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -47,45 +50,55 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Column="0" Grid.Row="0" Text="Breed : "/>
-            <ComboBox Grid.Column="1" Grid.Row="0">
+            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding BreedsList}" 
+                      SelectedItem="{Binding SelectedBreed}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        
+                        <TextBlock Text="{Binding}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            
             <TextBlock Grid.Row="1" Text="Nombre de photos :"/>
-            <ComboBox Grid.Row="1" Grid.Column="1">
-                <ComboBoxItem Content="1"/>
-                <ComboBoxItem Content="3"/>
-                <ComboBoxItem Content="5"/>
-                <ComboBoxItem Content="10"/>
+            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding NbDogWantedList}"
+                      SelectedItem="{Binding SelectedNb}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Grid.Row="2" Grid.Column="1" Content="Fetch!" Width="150"/>
+
+            <Button Grid.Row="2" Grid.Column="1" Content="Fetch!" Width="150" Command="{Binding LoadDogsCommand}" />
+            
+            
             <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <ListView Grid.Row="0" ItemsSource="{Binding}">
+
+                <ListView Grid.Row="0" ItemsSource="{Binding CurrentImages}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="5" HorizontalAlignment="Stretch"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <!-- Vous pouvez utiliser le contrôle que vous voulez pour présenter les photos -->
+                  
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                                <Image Source="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill"/>
-                                <TextBlock Text="{Binding }" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                <Image Source="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" MaxHeight="100px" MaxWidth="100px"/>
+                                <!--<TextBlock Text="{Binding }" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />-->
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                    <Button Content="Previous" Margin="10"/>
-                    <Button Content="Next" Margin="10"/>
+                    <Button Content="Previous" Margin="10" Command="{Binding BackLoadDogsCommand}"/>
+                    <Button Content="Next" Margin="10" Command="{Binding NextLoadDogsCommand}"/>
                 </StackPanel>
             </Grid>
         </Grid>

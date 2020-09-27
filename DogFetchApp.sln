@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DogFetchApp", "DogFetchApp\DogFetchApp.csproj", "{62B698BF-7B52-440B-84A0-12942D0F1FDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DogFetchApp", "DogFetchApp\DogFetchApp.csproj", "{62B698BF-7B52-440B-84A0-12942D0F1FDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiHelper", "ApiHelper\ApiHelper.csproj", "{CE5DBC45-7C8F-45C4-A0C8-183AFA6F8CDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiHelper", "ApiHelper\ApiHelper.csproj", "{CE5DBC45-7C8F-45C4-A0C8-183AFA6F8CDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
