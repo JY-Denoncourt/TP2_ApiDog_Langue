@@ -3,9 +3,12 @@ using DogFetchApp.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -26,7 +29,7 @@ namespace DogFetchApp.ViewModels
         private ObservableCollection<string> dogImageList = new ObservableCollection<string>();
         private ObservableCollection<string> currentImages = new ObservableCollection<string>();
 
-
+        private string language;
         #endregion
 
         #region IAsyncCommand------------------------------------------------------------------------
@@ -34,9 +37,11 @@ namespace DogFetchApp.ViewModels
         public AsyncCommand<string> NextLoadDogsCommand { get; private set; }
         public AsyncCommand<string> BackLoadDogsCommand { get; private set; }
 
+
+        public DelegateCommand<string> ChangeLangageDelegate { get; private set; }
         #endregion
 
-        # region Defenitions--------------------------------------------------------------------------
+        #region Defenitions--------------------------------------------------------------------------
         public ObservableCollection<string> BreedsList
         {
             get => breedsList;
@@ -128,6 +133,15 @@ namespace DogFetchApp.ViewModels
             }
         }
 
+
+        public string Language {
+            get => language;
+            set
+            {
+                language = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Constructeur ------------------------------------------------------------------------
@@ -138,6 +152,7 @@ namespace DogFetchApp.ViewModels
             NextLoadDogsCommand = new AsyncCommand<string>(NextLoadImages, CanExecuteNextLoadImage);
             BackLoadDogsCommand = new AsyncCommand<string>(BackLoadImages, CanExecuteBackLoadImage);
 
+            ChangeLangageDelegate = new DelegateCommand<string>(ChangeLanguage);
 
             loadBreeds();
             initDogWanted();
@@ -263,6 +278,45 @@ namespace DogFetchApp.ViewModels
         }
         #endregion
 
+        #region (--) Sert a faire changement de langue app et redemarrer
+        private void ChangeLanguage(string param)
+        {
+            MessageBoxResult result = MessageBox.Show($"{ Properties.Resources.Msg_Restart}", "My App", MessageBoxButton.YesNoCancel);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    Properties.Settings.Default.Language = param;
+                    Properties.Settings.Default.Save();
+
+
+                   
+                    
+                    var filename = Application.ResourceAssembly.Location;
+                    var newFile = Path.ChangeExtension(filename, ".exe");
+                    Process.Start(newFile);
+                    Application.Current.Shutdown();
+
+
+
+
+                    //Restart();
+                    break;
+                case MessageBoxResult.No:
+                    MessageBox.Show($"{ Properties.Resources.Msg_RestartLater}");
+                    break;
+                case MessageBoxResult.Cancel:
+                    MessageBox.Show($"{ Properties.Resources.Msg_Nevermind}");
+                    break;
+            }
+        }
+
+
+        void Restart()
+        {
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
+        }
+        #endregion
 
         #endregion
 
