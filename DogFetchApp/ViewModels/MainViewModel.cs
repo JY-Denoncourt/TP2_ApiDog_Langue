@@ -287,23 +287,15 @@ namespace DogFetchApp.ViewModels
                 case MessageBoxResult.Yes:
                     Properties.Settings.Default.Language = param;
                     Properties.Settings.Default.Save();
-
-
-                   
-                    
-                    var filename = Application.ResourceAssembly.Location;
-                    var newFile = Path.ChangeExtension(filename, ".exe");
-                    Process.Start(newFile);
-                    Application.Current.Shutdown();
-
-
-
-
-                    //Restart();
+                    Restart();
                     break;
+
                 case MessageBoxResult.No:
                     MessageBox.Show($"{ Properties.Resources.Msg_RestartLater}");
+                    Properties.Settings.Default.Language = param;
+                    Properties.Settings.Default.Save();
                     break;
+
                 case MessageBoxResult.Cancel:
                     MessageBox.Show($"{ Properties.Resources.Msg_Nevermind}");
                     break;
@@ -313,7 +305,9 @@ namespace DogFetchApp.ViewModels
 
         void Restart()
         {
-            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            var filename = Application.ResourceAssembly.Location;
+            var newFile = Path.ChangeExtension(filename, ".exe");
+            Process.Start(newFile);
             Application.Current.Shutdown();
         }
         #endregion
